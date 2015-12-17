@@ -1,0 +1,100 @@
+<!doctype html>
+<html enc="ru">
+    <head>
+	<title>A-hen-ho</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{ url_for( "static", filename="favicon.ico" ) }}" />
+	<link type="text/css" rel="stylesheet" href="{{ url_for( "static", filename="css/bootstrap.min.css" ) }}"  />
+	<link type="text/css" rel="stylesheet" href="{{ url_for( "static", filename="css/bootstrap-theme.min.css" ) }}" />
+	<link type="text/css" rel="stylesheet" href="{{ url_for( "static", filename="css/ahenho.css" ) }}" />
+    </head>
+    <body>
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	    <div class="container-fluid">
+		<div class="nav navbar-nav navbar-left">
+		    <a class="navbar-brand">A-Hen-Ho control panel</a>
+		</div>
+		<div class="nav navbar-nav navbar-right">
+		    <time class="navbar-brand" href="javascript:void(0)" id="time">00:00:00 00.00.00</time>
+		</div>
+		<div class="nav navbar-nav navbar-right">
+		    <a class="navbar-brand" href="javascript:void(0)" id="temperature"><span id="temp_value">37</span>&#x2103;</a>
+		</div>
+	    </div>
+	</div>
+
+	<div id="contents">
+        <div class="panel panel-danger">
+            <div class="panel-heading">Door locking</div>
+            <div class="panel-body">
+                <div id="door_alarm">Door state is not initialized yet. Door is not functional</div>
+                <table class="table">
+                    <thead><td>Enable</td><td>Open</td><td>Close</td><td>Delete</td></thead>
+                </table>
+                <button type="button" class="btn btn-default">Add</button>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Lamp 1 schedule</div>
+            <div class="panel-body">
+                <p>...</p>
+                <table class="table">
+                    <thead><td>Enable</td><td>On</td><td>Off</td><td>Delete</td></thead>
+                </table>
+                <button type="button" class="btn btn-default">Add</button>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Lamp 2 schedule</div>
+            <div class="panel-body">
+                <p>...</p>
+                <table class="table">
+                    <thead><td>Enable</td><td>On</td><td>Off</td><td>Delete</td></thead>
+                </table>
+                <button type="button" class="btn btn-default">Add</button>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Lamp 3 schedule</div>
+            <div class="panel-body">
+                <p>...</p>
+                <table class="table">
+                    <thead><td>Enable</td><td>On</td><td>Off</td><td>Delete</td></thead>
+                </table>
+                <button type="button" class="btn btn-default">Add</button>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Lamp 4 schedule</div>
+            <div class="panel-body">
+                <p>...</p>
+                <table class="table">
+                    <thead><td>Enable</td><td>On</td><td>Off</td><td>Delete</td></thead>
+                </table>
+                <button type="button" class="btn btn-default">Add</button>
+            </div>
+        </div>
+
+			</tr>
+			<tr>
+			    <td><input type="checkbox" name="on" value="on"/></td>
+			    <td><input type="checkbox" name="all" value="all" /></td>
+			    <td><input type="time" name="start" id="start"/></td>
+			    <td><input type="time" name="stop" id="stop"/></td>
+			</tr>
+		    </table>
+		</div>
+	    </div>
+	</div>
+	<div id="scripts">
+	    <script src='{{ url_for( "static", filename="js/jquery.min.js" ) }}'></script>
+	    <script src='{{ url_for( "static", filename="js/bootstrap.min.js" ) }}'></script>
+	    <script src='{{ url_for( "static", filename="js/ahenho.js" ) }}'></script>
+	    <script src='{{ url_for( "static", filename="js/ah_time.js" ) }}'></script>
+	</div>
+    </body>
+</html>

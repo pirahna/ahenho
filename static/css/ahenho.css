@@ -1,0 +1,30 @@
+body {
+    width: 80%;
+    padding: 70pt 16pt 16pt 16pt;
+    background: #ffffff url('/static/img/background.png') repeat-y scroll center top;
+    background-size: 50% auto;
+}
+
+table {
+    border-collapse: collapse;
+    border-width: 1px;
+    border-spacing: 0px;
+    border-style: solid;
+}
+
+td {
+    width: auto;
+    border-width: 1px;
+    border-spacing: 0px;
+    border-style: solid;
+    padding: 4px;
+    vertical-align: top;
+}
+
+.th {
+    padding: 8px;
+    background-color: lightgray;
+    border-width: 1px;
+    border-spacing: 0px;
+    border-style: solid;
+}
