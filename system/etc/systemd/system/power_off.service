@@ -1,0 +1,11 @@
+[Unit]
+Description=Start listening of the power-off button to react and switch power off
+DefaultDependencies=no
+Before=sysinit.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/lib/ahenho/power_off.py
+
+[Install]
+WantedBy=sysinit.target

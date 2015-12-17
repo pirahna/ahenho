@@ -38,7 +38,7 @@ chron daemon configuration managed using python
 chrontab module.
 
 backend part of the configuratiuon GUI implemented using
-python, flask, nginx
+python, flask, nginx, uwsgi (used git version)
 
 frontend part of the configuration GUI uses JS, 
 HTML5 and some common JS modules like jQuery, Bootstrap 

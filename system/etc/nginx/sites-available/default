@@ -1,0 +1,28 @@
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	root /srv/ahenho;
+
+	index index.html index.htm;
+
+	server_name some_server_name;
+
+	location ~ \/ahenho\/.*\/static {
+	    try_files $uri $uri/ =404;
+	    access_log off;
+	    log_not_found off;
+	}
+
+	location / {
+	    try_files $uri @ahenho;
+	}
+	location /ahenho {
+	    try_files $uri @ahenho;
+	}
+	location @ahenho {
+	    include uwsgi_params;
+	    uwsgi_pass unix:/tmp/ahenho.socket;
+	}
+}

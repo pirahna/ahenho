@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# first parameter should be like: "YYYY-MM-DD HH:MM:SS"
+date "+%F %T"
