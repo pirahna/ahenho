@@ -10,7 +10,8 @@ class Temperature():
     def get():
         res_text = ''
         try:
-            res_text = check_output(['sudo', 'get_temperature'])
+#            res_text = check_output(['sudo', 'get_temperature'])
+            res_text = check_output(['/usr/local/bin/get_temperature'], shell=True)
         except CalledProcessError as e:
             res_text = e.output
 

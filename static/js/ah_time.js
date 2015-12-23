@@ -15,7 +15,7 @@ function update_time() {
             ":" + add_zero( remote_date.getMinutes()) + 
             ":" + add_zero( remote_date.getSeconds()) + 
             " " + add_zero( remote_date.getDate()) + 
-            "." + add_zero( remote_date.getMonth()) + 
+            "." + add_zero( 1 + remote_date.getMonth()) + 
             "." + remote_date.getFullYear();
     }
 }
