@@ -28,3 +28,17 @@ td {
     border-spacing: 0px;
     border-style: solid;
 }
+
+.tbl-checks {
+    width: 5em;
+}
+.tbl-times {
+    width: 7em;
+}
+.tbl-buttons {
+    width: 10em;
+}
+
+td > button {
+    width: 6em;
+}

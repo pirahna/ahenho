@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en-US" ng-app="ahenho">
+<head>
+  <meta charset="utf-8"/>
+  <title>A-Hen-Ho. A henhouse control panel</title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <link rel="shortcut icon" type="image/x-icon" href='{{ url_for( "static", filename="favicon.ico") }}' />
+
+  <link type="text/css" rel="stylesheet" href='{{ url_for( "static", filename="css/bootstrap.min.css") }}' />
+  <link type="text/css" rel="stylesheet" href='{{ url_for( "static", filename="css/bootstrap-theme.min.css") }}' />
+  <link type="text/css" rel="stylesheet" href='{{ url_for( "static", filename="css/ahenho.css") }}' />
+</head>
+<body>
+  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	    <div class="container-fluid">
+		    <div class="nav navbar-nav navbar-left">
+		        <a class="navbar-brand">A-Hen-Ho control panel</a>
+		    </div>
+		    <div class="nav navbar-nav navbar-right" ng-controller="TimeCtrl">
+                <a class="navbar-brand btn" ng-bind="remoteTimeValue" ng-click="updateRemoteTime()"></a>
+		    </div>
+		    <div class="nav navbar-nav navbar-right" ng-controller="TemperatureCtrl">
+		        <a class="navbar-brand"><span ng-bind="remoteTemperature"></span>&#x2103;</a>
+		    </div>
+	    </div>
+	</div>
+
+
+  <!-- <input type="text" ng-model="remoteTemperature" ng-controller="TemperatureCtrl"/><br/> -->
+
+  <div ng-controller="JobsCtrl">
+    <!--
+    {% set  jobs_list_url = url_for ( "static", filename="app/includes/jobsInclude.html" ) %}
+    <div ng-include="'{{ jobs_list_url }}'"></div>
+    -->
+
+    <table id="jobs">
+        <thead>
+            <td class="tbl-enabled tbl-checkbox">Enabled</td>
+            <td class="tbl-time">Time</td>
+            <td class="tbl-description">Task description</td>
+            <td class="tbl-edit tbl-button">Edit</td>
+            <td class="tbl-delete tbl-button">Delete</td>
+        </thead>
+        <tr data-id="{a Job.idx a}' }}" ng-repeat="Job in jobs">
+            <td><input type="checkbox" ng-true-value="'on'" ng-false-value="'off'" ng-model="Job.enabled"></td>
+            <td>{a Job.hour a}:{a Job.minute a} </td>
+            <td>{a Job.description a}</td>
+            <td><input type="button" ng-click="editJob(Job)" value="Edit"/></td>
+            <td><input type="button" ng-click="deleteJob(Job)" value="Delete"/></td>
+        </tr>
+    </table>
+    <hr/>
+
+    <button ng-click="showEdit()">Create job</button>
+
+    <hr/>
+
+    <div ng-show="isEditVisible">
+        <form>
+            <input type="hidden" ng-model="editableJob.idx" />
+            <label>Enabled:</label>
+            <input type="checkbox" ng-model="editableJob.enabled" ng-true-value="'on'" ng-false-value="'off'"><br/>
+            <label>Time:</label>
+            <input type="number" ng-model="editableJob.hour" min="0" max="23" />:
+            <input type="number" ng-model="editableJob.minute" min="0" max="59" /><br/>
+            <label>Task</label>
+            <select ng-model="editableJob.description">
+                {% for fn in functions_available %}
+                <option value="{{ fn }}">{{ fn }}</option>
+                {% endfor %}
+            </select><br/>
+            <input type="submit" value="Save" ng-click="saveJob( editableJob )"/>
+        </form>
+    </div>
+
+  </div>
+
+  <script src='{{ url_for( "static", filename="js/jquery.min.js" ) }}' ></script>
+  <script src='{{ url_for( "static", filename="js/angular.min.js" ) }}' ></script>
+  <script src='{{ url_for( "static", filename="js/angular-resource.min.js" ) }}' ></script>
+
+  <script src='{{ url_for( "static", filename="app/app.js" ) }}' ></script>
+  <script src='{{ url_for( "static", filename="app/controllers/timeController.js" ) }}' ></script>
+  <script src='{{ url_for( "static", filename="app/controllers/jobsController.js" ) }}' ></script>
+  <script src='{{ url_for( "static", filename="app/controllers/temperatureController.js" ) }}' ></script>
+
+</body>
+</html>

@@ -1,22 +1,140 @@
 #!/usr/bin/python
 
-from crontab import CronTab
+import datetime
 
-from datetime import time
+from crontab import CronTab
+from datetime import time, datetime
 from subprocess import call, check_output
 
 class Temperature():
+    """
+    Temperature control for A-hen-ho management console. As far a temperature 
+    can't be set from outside, there is only one method available
+    """
     @staticmethod
     def get():
         res_text = ''
         try:
-#            res_text = check_output(['sudo', 'get_temperature'])
             res_text = check_output(['/usr/local/bin/get_temperature'], shell=True)
         except CalledProcessError as e:
             res_text = e.output
 
         return res_text
 
+class HenTime():
+    """
+    Time control for A-hen-ho management console. teh time can be requested and set
+    using this class functionality
+    """
+    @staticmethod
+    def get():
+        return datetime.now().isoformat()
+
+    @staticmethod
+    def set(time):
+        res_text = 'was there'
+        try:
+            res_text = check_output('/usr/local/bin/set_time "%s"' % time, shell=True)
+        except CalledProcessError as e:
+            res_text = e.output
+
+        return res_text
+
+
+""" ========================================================================== """
+
+
+hen_tasks = {
+    'Lift door up' : '/usr/local/bin/door_up',
+    'Put door down' : '/usr/local/bin/door_down',
+    'Switch lamp 0 on' : '/usr/local/bin/relay 0 on',
+    'Switch lamp 0 off' : '/usr/local/bin/relay 0 off',
+    'Switch lamp 1 on' : '/usr/local/bin/relay 1 on',
+    'Switch lamp 1 off' : '/usr/local/bin/relay 1 off',
+    'Switch lamp 2 on' : '/usr/local/bin/relay 2 on',
+    'Switch lamp 2 off' : '/usr/local/bin/relay 2 off',
+    'Switch lamp 3 on' : '/usr/local/bin/relay 3 on',
+    'Switch lamp 3 off' : '/usr/local/bin/relay 3 off',
+    'Switch lamp 4 on' : '/usr/local/bin/relay 4 on',
+    'Switch lamp 4 off' : '/usr/local/bin/relay 4 off',
+    'Switch lamp 5 on' : '/usr/local/bin/relay 5 on',
+    'Switch lamp 5 off' : '/usr/local/bin/relay 5 off'
+}
+
+def get_available_tasks():
+    return hen_tasks.keys()
+
+
+class HenTask:
+    def __init__(self, command, description, idx, hour, minute, enabled):
+        self.idx = idx
+        self.hour = hour
+        self.minute = minute
+        self.enabled = enabled
+        self.command = command
+        self.description = description
+
+    def to_crontab(self, cron):
+        job = cron.new( command = self.command, comment = self.idx )
+        job.hour.on( self.hour )
+        job.minute.on( self.minute )
+        job.enable( self.enable )
+
+
+"""
+class HenTaskFactory:
+    def __init__(self, command, description):
+        self.command = command
+        self.description = description
+
+    def create(self, idx, hour, minute, enabled):
+        return HenTask( self.command, self.description, idx, hour, minute, enabled )
+"""
+
+
+
+
+
+
+
+
+
+"""
+class Tasker:
+    hen_tasks = [
+        HenTask('Lift door up', '/usr/local/bin/door_up'),
+        HenTask('Put door down', '/usr/local/bin/door_down'),
+        HenTask('Switch lamp 0 on', '/usr/local/bin/relay 0 on'),
+        HenTask('Switch lamp 0 off', '/usr/local/bin/relay 0 off'),
+        HenTask('Switch lamp 1 on', '/usr/local/bin/relay 1 on'),
+        HenTask('Switch lamp 1 off', '/usr/local/bin/relay 1 off'),
+        HenTask('Switch lamp 2 on', '/usr/local/bin/relay 2 on'),
+        HenTask('Switch lamp 2 off', '/usr/local/bin/relay 2 off'),
+        HenTask('Switch lamp 3 on', '/usr/local/bin/relay 3 on'),
+        HenTask('Switch lamp 3 off', '/usr/local/bin/relay 3 off'),
+        HenTask('Switch lamp 4 on', '/usr/local/bin/relay 4 on'),
+        HenTask('Switch lamp 4 off', '/usr/local/bin/relay 4 off'),
+        HenTask('Switch lamp 5 on', '/usr/local/bin/relay 5 on'),
+        HenTask('Switch lamp 5 off', '/usr/local/bin/relay 5 off'),
+    ]
+
+    def set_tasks(self, tasks):
+        cron = CronTab(user=True)
+        cron.remove_all()
+
+        for task in tasks:
+            pass
+
+        cron.write()
+
+    def get_tasks(self):
+        return None
+
+def get_available_tasks():
+    tasks = []
+    for tsk in Tasker.hen_tasks:
+        tasks.append( tsk.description )
+    return tasks
 
 
 class Crons:
@@ -25,7 +143,7 @@ class Crons:
     # factories and with different id's
 
     # the job has follwing fields:
-    # from - start time
+    # from - start time 
     # upto - end time
     # factory - command
     # idx - job index, original and always incremented
@@ -84,35 +202,4 @@ class Crons:
 #
 #
 
-class Door():
-    def _get_job_by_id(id):
-        return cronobj.find_comment( id )
-
-    def __init__(self):
-        self.state = 0
-        self.cron = CronTab(user = True)
-        self.read()
-
-    def get(self, id=None):
-        return []
-
-    def put(self, item):
-        return []
-
-    def delete(self, id):
-        return []
-
-    def post(self, item):
-        return []
-
-
-
-
-class Lamp():
-    def __init__(self):
-        pass
-
-
-class Lamps():
-    def __init__(self):
-        self.lamps = [ Lamp, Lamp, Lamp, Lamp ]
+"""
