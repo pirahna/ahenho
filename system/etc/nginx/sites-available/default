@@ -3,11 +3,17 @@ server {
 	listen 80 default_server;
 	listen [::]:80 default_server;
 
+	# SSL configuration
+	#
+	# listen 443 ssl default_server;
+	# listen [::]:443 ssl default_server;
+	#
+
 	root /srv/ahenho;
 
 	index index.html index.htm;
 
-	server_name some_server_name;
+	server_name vik.ydns.eu;
 
 	location ~ \/ahenho\/.*\/static {
 	    try_files $uri $uri/ =404;

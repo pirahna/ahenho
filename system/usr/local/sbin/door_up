@@ -1,3 +1,0 @@
-#!/bin/sh
-
-/usr/bin/python3 /usr/lib/ahenho/door_up.py

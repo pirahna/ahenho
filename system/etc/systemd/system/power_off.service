@@ -5,7 +5,7 @@ Before=sysinit.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /usr/lib/ahenho/power_off.py
+ExecStart=/usr/bin/python2 /usr/lib/ahenho/power_off.py
 
 [Install]
 WantedBy=sysinit.target

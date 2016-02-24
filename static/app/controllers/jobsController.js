@@ -5,7 +5,7 @@
 app.controller('JobsCtrl', function($scope, $http, Job) {
 
     var createJob = function ( newJob ) {
-        newJob.$save();
+        newJob.$save()
         $scope.jobs.push( newJob );
     }
 

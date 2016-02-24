@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, g, redirect, url_for, json, j
 from json import dumps
 
 
-from hardware import Temperature, HenTime, get_available_tasks
+from hardware import Temperature, HenTime, get_available_tasks, HenTasks
 
 import logging
 from logging.handlers import RotatingFileHandler
@@ -14,6 +14,7 @@ from logging.handlers import RotatingFileHandler
 
 
 app = Flask(__name__)
+tasks = HenTasks()
 
 
 #==============================================================
@@ -42,7 +43,6 @@ def mainpage():
 @app.route('/api/1.0/temperature/', methods=['GET'])
 def our_temperature():
     tmp = Temperature.get()
-    app.logger.info("temperature is %s", tmp)
     return tmp
 
 #==============================================================
@@ -74,14 +74,17 @@ def our_time():
 @app.route('/api/1.0/jobs', methods=['GET', 'POST', 'DELETE'])
 def all_jobs():
     if request.method == 'GET':
-        return make_response(dumps( [
-            { 'idx' : '1', 'enabled' : 'on', 'hour' : '08', 'minute' : '10', 'description' : 'door_up' },
-            { 'idx' : '2', 'enabled' : 'on', 'hour' : '11', 'minute' : '11', 'description' : 'lamp 1 on' },
-            { 'idx' : '3', 'enabled' : 'off', 'hour' : '21', 'minute' : '23', 'description' : 'door_down' }
-        ] ))
+        return make_response( dumps( tasks.get_all_tasks() ))
+
     elif request.method == 'POST':
-        app.logger.info('got a post request to add a new job')
-        pass
+        params = request.get_json( force=True )
+        return jsonify( tasks.add_new_task(
+            params['description'], 
+            params['hour'],
+            params['minute'],
+            params['enabled'] 
+        ))
+
     elif request.method == 'DELETE':
         app.logger.info('got a post request to delete a job with contents: %s', request.data)
         pass
@@ -94,15 +97,20 @@ def job_by_idx(idx):
     if request.method == 'GET':
         app.logger.info('got a get request to return a job data with idx: %s', idx)
         pass
-    elif request.method == 'POST':
-        app.logger.info('got a post request to add a new job with idx: %s', idx)
-        pass
+
     elif request.method == 'DELETE':
-        app.logger.info('got a post request to delete a job with idx: %s', idx)
-        pass
-    elif request.method == 'PUT':
-        app.logger.info('got a put request to modify a job with idx: %s', idx)
-        pass
+        tasks.delete_task( idx )
+        return ''
+
+    elif request.method == 'PUT' or request.method == 'POST':
+        params = request.get_json( force=True )
+        return jsonify( tasks.update_task(
+            idx,
+            params['description'],
+            params['hour'],
+            params['minute'],
+            params['enabled'] 
+        ))
 
     return ''
 
@@ -112,9 +120,12 @@ if __name__ == '__main__':
     """ 
     some logging support. all the logged messages will be collected in the file
     """
+    """
     handler=RotatingFileHandler('ahenho.log', maxBytes=10000, backupCount=1)
     handler.setLevel(logging.INFO)
     app.logger.addHandler(handler)
+    """
+
     """
     http://stackoverflow.com/questions/30362950/is-it-possible-to-use-angular-with-the-jinja2-template-engine
 
@@ -129,6 +140,4 @@ if __name__ == '__main__':
     ))
     app.jinja_options = jinja_options
     """
-
-
     app.run(debug=True, host='0.0.0.0', port=3080)
