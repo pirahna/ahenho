@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# first parameter should be like: "YYYY-MM-DD HH:MM:SS"
+sudo hwclock --set --date="$1"
+
+# write system time to the RTC
+sudo hwclock -s

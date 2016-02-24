@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/bin/python2 /usr/lib/ahenho/door_down.py
