@@ -8,8 +8,8 @@ from json import dumps
 
 from hardware import Temperature, HenTime, get_available_tasks, HenTasks
 
-import logging
-from logging.handlers import RotatingFileHandler
+#import logging
+#from logging.handlers import RotatingFileHandler
 
 
 
@@ -51,7 +51,7 @@ def our_temperature():
 @app.route('/api/1.0/time/', methods=['GET', 'POST'])
 def our_time():
     if request.method == 'POST':
-        app.logger.info("need to set time to %s", request.data)
+        # app.logger.info("need to set time to %s", request.data)
         return HenTime.set(request.data)
     else:
         return HenTime.get()
@@ -85,20 +85,12 @@ def all_jobs():
             params['enabled'] 
         ))
 
-    elif request.method == 'DELETE':
-        app.logger.info('got a post request to delete a job with contents: %s', request.data)
-        pass
-
     return ''
 
 
 @app.route('/api/1.0/jobs/<int:idx>', methods=['GET', 'POST', 'DELETE', 'PUT'])
 def job_by_idx(idx):
-    if request.method == 'GET':
-        app.logger.info('got a get request to return a job data with idx: %s', idx)
-        pass
-
-    elif request.method == 'DELETE':
+    if request.method == 'DELETE':
         tasks.delete_task( idx )
         return ''
 

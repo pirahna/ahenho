@@ -113,7 +113,7 @@ class HenTasks:
         valid job object to notify frontend about successfull creation
         """
         idx = self.__cron.new_job( create_task(
-            idx, hen_tasks[ description ], 
+            0, hen_tasks[ description ], 
             hour, minute, ( enabled == 'on' )))
 
         return {
@@ -186,16 +186,12 @@ class HenCron:
         return idx
 
     def update_job(self, job):
-        if job['command'] and job['hour'] and job['minute'] and job['idx']:
-            jobc = list( self.__cron.find_comment( job['idx'] ))
-
+        if job['command'] and job['hour'] and job['minute']:
+            jobc = list( self.__cron.find_comment( str( job['idx'] )))
             if len(jobc):
-                print( "hour is %s" % jobc[0].hour )
-
                 jobc[0].hour.on( job['hour'] )
                 jobc[0].minutes.on( job['minute'] )
                 jobc[0].enable( job['enabled'] if job['enabled'] else False )
-
                 self.__cron.write()
 
 
@@ -208,7 +204,7 @@ class HenCron:
 """
 
 #=====================================================================
-# crontab file can be only one per user.
+# crontab file can be only one per user. user must be in 'cron' group
 # crontab module can make a list of the crons by filetring commands
 # the comment of the command should contain ID
 #
