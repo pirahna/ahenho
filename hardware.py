@@ -166,28 +166,29 @@ class HenCron:
         else:
             self.__next_idx = max( comments ) + 1
 
+
     def get_tasks(self):
         jobs = []
         for job in self.__cron:
             jobs.append({
                 'command': job.command,
                 'idx': job.comment,
-                'hour': job.hour,
-                'minute' : job.minute,
-                'enabled' : job.enable
+                'hour': int( str( job.hour)),
+                'minute' : int( str( job.minute)),
+                'enabled' : job.is_enabled()
             })
         return jobs
 
     def new_task(self, job):
         idx = None
         if job['command'] and job['hour'] and job['minute']:
-            idx = self.__next_id
-            self.__next_id += 1
+            idx = self.__next_idx
+            self.__next_idx += 1
 
             jobc = self.__cron.new( command = job['command'], comment = str( idx ) )
             jobc.hours.on( job['hour'] )
             jobc.minute.on( job['minute'] )
-            jobc.enable( job['enable'] if job['enable'] else False )
+            jobc.enable( job['enabled'] if job['enabled'] else False )
 
             self.__cron.write()
 
@@ -195,19 +196,21 @@ class HenCron:
 
     def update_job(self, job):
         if job['command'] and job['hour'] and job['minute'] and job['idx']:
-            jobc = self.__cron.find_comment( job['idx'] )
-            if jobc:
-                jobc.hours.on( job['hour'] )
-                jobc.minutes.on( job['mint'] )
-                jobc.enable( job['enable'] if job['enable'] else False )
+            jobc = list( self.__cron.find_comment( job['idx'] ))
 
-                self.__crontab.write()
+            if len(jobc):
+                print( "hour is %s" % jobc[0].hour )
+
+                jobc[0].hour.on( job['hour'] )
+                jobc[0].minutes.on( job['minute'] )
+                jobc[0].enable( job['enabled'] if job['enabled'] else False )
+
+                self.__cron.write()
 
 
     def delete_job(self, idx):
         self.__cron.remove_all( comment = str(idx) )
         self.__cron.write()
-
 
 
 """
