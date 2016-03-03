@@ -91,18 +91,13 @@ class HenTasks:
     """
 
     def __init__(self):
-        self.tasks = {}
-        self.next_idx = 0
-        for k in hen_tasks.keys():
-            self.tasks[ self.next_idx ] = create_task( self.next_idx, hen_tasks[ k ], self.next_idx + 1, 4 * self.next_idx, True )
-            self.next_idx += 1
+        self.__cron = HenCron()
 
 
     def get_all_tasks(self):
-        """ return list of the all jobs created in teh system """
+        """ return list of the all jobs created in the system """
         result = []
-        for k in self.tasks.keys():
-            job = self.tasks[k]
+        for job in self.__cron.get_jobs():
             result.append({
                 'idx' : job['idx'],
                 'description' : get_description_by_command( job['command']),
@@ -117,11 +112,9 @@ class HenTasks:
         """ add a new task. returns a created job object. this should be 
         valid job object to notify frontend about successfull creation
         """
-        idx = self.next_idx
-        self.next_idx += 1
-        self.tasks[ idx ] = create_task(
+        idx = self.__cron.new_job( create_task(
             idx, hen_tasks[ description ], 
-            hour, minute, ( enabled == 'on' ))
+            hour, minute, ( enabled == 'on' )))
 
         return {
             'idx' : idx,
@@ -134,18 +127,16 @@ class HenTasks:
 
     def delete_task(self, idx):
         """ delete task by it's idx """
-        if idx in self.tasks:
-            del self.tasks[ idx ]
+        self.__cron.delete_job( idx )
 
     def update_task(self, idx, description, hour, minute, enabled):
         """ update task configuration without changing it's idx.
         should return valid job object to notify frontend about 
         operation success
         """
-
-        self.tasks[ idx ] = create_task(
+        self.__cron.update_job( create_task(
             idx, hen_tasks[ description ], 
-            hour, minute, ( enabled == 'on' ))
+            hour, minute, ( enabled == 'on' )))
 
         return {
             'idx' : idx,
@@ -167,7 +158,7 @@ class HenCron:
             self.__next_idx = max( comments ) + 1
 
 
-    def get_tasks(self):
+    def get_jobs(self):
         jobs = []
         for job in self.__cron:
             jobs.append({
@@ -179,7 +170,7 @@ class HenCron:
             })
         return jobs
 
-    def new_task(self, job):
+    def new_job(self, job):
         idx = None
         if job['command'] and job['hour'] and job['minute']:
             idx = self.__next_idx
@@ -211,6 +202,7 @@ class HenCron:
     def delete_job(self, idx):
         self.__cron.remove_all( comment = str(idx) )
         self.__cron.write()
+
 
 
 """
