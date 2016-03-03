@@ -205,7 +205,7 @@ class HenCron:
 
 
     def delete_job(self, idx):
-        self.__cron.remove_all( comment = str(idx.toString) )
+        self.__cron.remove_all( comment = str(idx) )
         self.__cron.write()
 
 
