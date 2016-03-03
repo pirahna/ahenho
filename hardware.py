@@ -173,12 +173,12 @@ class HenCron:
                 'command': job.command,
                 'idx': job.comment,
                 'hour': job.hour,
-                'minute' : job.minute[0],
+                'minute' : job.minute,
                 'enabled' : job.enable
             })
         return jobs
 
-    def new_task(self, task):
+    def new_task(self, job):
         idx = None
         if job['command'] and job['hour'] and job['minute']:
             idx = self.__next_id
