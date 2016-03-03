@@ -159,7 +159,12 @@ class HenCron:
     def __init__(self):
         self.__cron = CronTab(user=True)
         self.__cron.read()
-        self.__next_idx = max( [ int( idx ) for idx in self.__cron.comments ] ) + 1
+
+        comments = [ int( idx ) for idx in self.__cron.comments ]
+        if 0 == len( comments ):
+            self.__next_idx = 0
+        else:
+            self.__next_idx = max( comments ) + 1
 
     def get_tasks(self):
         jobs = []
