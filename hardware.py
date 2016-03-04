@@ -67,7 +67,9 @@ hen_tasks = {
 
 def get_available_tasks():
     """ return a list of the possible tasks as their descriptions list """
-    return hen_tasks.keys()
+    descriptions = hen_tasks.keys()
+    descriptions.sort()
+    return descriptions
 
 def get_description_by_command(cmd):
     """ return a description by it's commmand text """

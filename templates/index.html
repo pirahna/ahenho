@@ -44,7 +44,7 @@
         </thead>
         <tr data-id="{a Job.idx a}" ng-repeat="Job in jobs">
             <td><input type="checkbox" ng-true-value="'on'" ng-false-value="'off'" ng-model="Job.enabled" ng-click="saveJob(Job)"></td>
-            <td>{a Job.hour a}:{a Job.minute a} </td>
+            <td>{a Job.hour | numberFixedLen:2 a}:{a Job.minute | numberFixedLen:2 a} </td>
             <td>{a Job.description a}</td>
             <td><input type="button" ng-click="editJob(Job)" value="Edit"/></td>
             <td><input type="button" ng-click="deleteJob(Job)" value="Delete"/></td>
